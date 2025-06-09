@@ -5,7 +5,7 @@ import Header from './components/header';
 import About from './components/about';
 import Projects from './components/projects';
 import Contact from './components/contact';
-import Footer from './components/footer'; // Importa el Footer aquí
+import Footer from './components/footer'; // Import the Footer component here
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
-      <Footer /> {/* Footer siempre estará al final */}
+      <Footer /> {/* Footer will always be at the bottom */}
     </div>
   </Router>
   );
