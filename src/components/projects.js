@@ -10,7 +10,7 @@ const projects = [
   },
   {
     title: "YahaPOS",
-    description: "YayaPOS is a point of sale (POS) system developed in WPF, known for its speed, ease of use, and elegant design. It is designed to provide a seamless and efficient user experience, integrating perfectly with SQL Server to ensure robust performance and reliable data management. YayaPOS is ideal for businesses seeking a modern and efficient solution for their retail needs.",
+    description: "YahaPOS is a point of sale (POS) system developed in WPF, known for its speed, ease of use, and elegant design. It is designed to provide a seamless and efficient user experience, integrating perfectly with SQL Server to ensure robust performance and reliable data management. YahaPOS is ideal for businesses seeking a modern and efficient solution for their retail needs.",
     link: "#",
     image: "path/to/project2-image.jpg"
   },

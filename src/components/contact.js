@@ -1,10 +1,15 @@
 import React from 'react';
 
 const Contact = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: handle form submission logic
+  };
+
   return (
     <section id="contact" className="p-8 bg-white text-gray-900">
       <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block mb-1" htmlFor="name">Name:</label>
           <input type="text" id="name" className="w-full border-2 border-gray-300 p-2 rounded-md" />
