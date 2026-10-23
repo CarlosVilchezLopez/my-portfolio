@@ -15,7 +15,13 @@ const About = () => {
   const { t } = useLanguage();
 
   return (
-    <Section id="about" number="01" label={t.nav.about} title={t.about.title} className="border-y border-line bg-surface">
+    <Section
+      id="about"
+      number="01"
+      label={t.nav.about}
+      title={t.about.title}
+      className="border-y border-line bg-surface"
+    >
       <div className="grid gap-12 md:grid-cols-5">
         <m.p {...reveal()} className="text-lg leading-relaxed text-muted text-pretty md:col-span-3">
           {t.about.paragraph}

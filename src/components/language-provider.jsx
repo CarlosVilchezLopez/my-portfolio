@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import translations from './data/translations.json';
-import { withViewTransition } from './hooks';
+import React, { useEffect, useState } from 'react';
+import translations from '../data/translations.json';
+import { LanguageContext } from '../i18n';
+import { withViewTransition } from '../hooks';
 
 const STORAGE_KEY = 'language';
-const LanguageContext = createContext(null);
 
 // Usa el idioma elegido antes o, la primera vez, el del navegador
 function getInitialLanguage() {
@@ -16,7 +16,7 @@ function getInitialLanguage() {
   return navigator.language?.toLowerCase().startsWith('es') ? 'es' : 'en';
 }
 
-export function LanguageProvider({ children }) {
+export default function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(getInitialLanguage);
 
   useEffect(() => {
@@ -40,8 +40,4 @@ export function LanguageProvider({ children }) {
       {children}
     </LanguageContext.Provider>
   );
-}
-
-export function useLanguage() {
-  return useContext(LanguageContext);
 }

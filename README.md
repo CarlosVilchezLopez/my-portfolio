@@ -14,15 +14,15 @@ Hecho con React 18, Tailwind CSS 4 y [Vite](https://vite.dev). Es una sola pági
 
 ## Dónde cambiar el contenido
 
-| Qué                                      | Archivo                       |
-| ---------------------------------------- | ----------------------------- |
-| Textos de la web (inglés y español)      | `src/data/translations.json`  |
-| Proyectos: resumen, descripción, imagen  | `src/data/projects.json`      |
-| Tecnologías de cada grupo de habilidades | `src/data/skills.js`          |
-| Correo, GitHub, LinkedIn y CV            | `src/data/profile.js`         |
-| Colores del tema claro y oscuro          | `src/index.css`               |
+| Qué                                      | Archivo                         |
+| ---------------------------------------- | ------------------------------- |
+| Textos de la web (inglés y español)      | `src/data/translations.json`    |
+| Proyectos: resumen, descripción, imagen  | `src/data/projects.json`        |
+| Tecnologías de cada grupo de habilidades | `src/data/skills.js`            |
+| Correo, GitHub, LinkedIn y CV            | `src/data/profile.js`           |
+| Colores del tema claro y oscuro          | `src/index.css`                 |
 | Foto de perfil                           | `src/assets/carlos-vilchez.jpg` |
-| Imagen al compartir el enlace            | `public/og-image.jpg`         |
+| Imagen al compartir el enlace            | `public/og-image.jpg`           |
 
 ## Requisitos
 

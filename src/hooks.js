@@ -38,20 +38,18 @@ export function usePrefersReducedMotion() {
 // o el número `run`. Devuelve lo escrito hasta ahora y si ya terminó.
 export function useTypewriter(text, { speed = 40, delay = 0, run = 0 } = {}) {
   const reduced = usePrefersReducedMotion();
-  const [typed, setTyped] = useState(reduced ? text : '');
+  // El progreso se guarda junto a la vuelta a la que pertenece; si la vuelta cambió, se empieza de cero
+  const round = `${run}:${text}`;
+  const [progress, setProgress] = useState({ round, length: 0 });
 
   useEffect(() => {
-    if (reduced) {
-      setTyped(text);
-      return;
-    }
+    if (reduced) return;
     let length = 0;
     let interval;
-    setTyped('');
     const timeout = setTimeout(() => {
       interval = setInterval(() => {
         length += 1;
-        setTyped(text.slice(0, length));
+        setProgress({ round, length });
         if (length >= text.length) clearInterval(interval);
       }, speed);
     }, delay);
@@ -59,9 +57,11 @@ export function useTypewriter(text, { speed = 40, delay = 0, run = 0 } = {}) {
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [text, speed, delay, run, reduced]);
+  }, [round, text, speed, delay, reduced]);
 
-  return { typed, done: typed === text };
+  let length = progress.round === round ? progress.length : 0;
+  if (reduced) length = text.length;
+  return { typed: text.slice(0, length), done: length >= text.length };
 }
 
 // Devuelve el id de la sección que ocupa el centro de la pantalla. `ids` debe ser estable.

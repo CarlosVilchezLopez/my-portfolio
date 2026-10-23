@@ -30,7 +30,11 @@ const Contact = () => {
 
   return (
     <Section id="contact" number="04" label={t.nav.contact} title={t.contact.title}>
-      <m.div {...reveal()} onPointerMove={trackPointer} className="card-glow rounded-2xl border border-line bg-card p-6 sm:p-12">
+      <m.div
+        {...reveal()}
+        onPointerMove={trackPointer}
+        className="card-glow rounded-2xl border border-line bg-card p-6 sm:p-12"
+      >
         <p className="max-w-xl text-lg leading-relaxed text-muted text-pretty">{t.contact.text}</p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">

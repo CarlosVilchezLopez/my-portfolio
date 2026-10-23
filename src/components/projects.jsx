@@ -20,7 +20,9 @@ function ProjectImage({ project, className = '' }) {
   if (!project.image) {
     const Icon = KIND_ICONS[project.kind];
     return (
-      <div className={`flex aspect-video flex-col items-center justify-center gap-3 bg-surface text-muted ${className}`}>
+      <div
+        className={`flex aspect-video flex-col items-center justify-center gap-3 bg-surface text-muted ${className}`}
+      >
         <Icon className="size-8" strokeWidth={1.5} aria-hidden="true" />
         <span className="font-mono text-xs">{t.projects.kinds[project.kind]}</span>
       </div>
@@ -122,7 +124,10 @@ function ProjectCard({ project, index, onOpen }) {
             className="inline-flex items-center gap-1 text-accent transition-colors hover:text-accent-hover"
           >
             {t.projects.details}
-            <ArrowRight className="size-4 transition-transform motion-safe:group-hover:translate-x-0.5" aria-hidden="true" />
+            <ArrowRight
+              className="size-4 transition-transform motion-safe:group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
           </button>
           {project.link && <VisitLink href={project.link}>{t.projects.visit}</VisitLink>}
         </div>
@@ -132,13 +137,10 @@ function ProjectCard({ project, index, onOpen }) {
 }
 
 // Ventana con la descripción completa. Usa <dialog>, que ya gestiona el foco y la tecla Esc.
-function ProjectDialog({ project, onClose }) {
+// `project` sigue definido después de cerrar, para que el contenido no desaparezca mientras se desvanece.
+function ProjectDialog({ project, open, onClose }) {
   const { language, t } = useLanguage();
   const dialogRef = useRef(null);
-  // Mantiene el último proyecto mientras la ventana se desvanece al cerrarse
-  const lastProject = useRef(project);
-  if (project) lastProject.current = project;
-  const shown = project ?? lastProject.current;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -147,26 +149,28 @@ function ProjectDialog({ project, onClose }) {
   }, [onClose]);
 
   useEffect(() => {
-    if (project) dialogRef.current.showModal();
-  }, [project]);
+    if (open && !dialogRef.current.open) dialogRef.current.showModal();
+  }, [open]);
 
   const close = () => dialogRef.current.close();
 
   return (
+    // Un clic fuera del contenido (en el fondo oscuro) cierra la ventana. Es solo un atajo para ratón:
+    // con teclado se cierra con Esc o con el botón Cerrar, así que no necesita equivalente de teclado.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <dialog
       ref={dialogRef}
       aria-labelledby="project-dialog-title"
-      // Un clic fuera del contenido (en el fondo oscuro) cierra la ventana
       onClick={(event) => event.target === dialogRef.current && close()}
       className="project-dialog m-auto max-h-[90vh] w-[min(44rem,calc(100%-2rem))] overflow-hidden rounded-2xl border border-line bg-card p-0 text-fg shadow-2xl"
     >
-      {shown && (
+      {project && (
         <div className="max-h-[90vh] overflow-y-auto">
-          <ProjectImage project={shown} className="border-b border-line" />
+          <ProjectImage project={project} className="border-b border-line" />
           <div className="p-6 sm:p-8">
             <div className="flex items-start justify-between gap-4">
               <h3 id="project-dialog-title" className="text-2xl font-semibold tracking-tight">
-                {shown[language].title}
+                {project[language].title}
               </h3>
               <button
                 type="button"
@@ -178,12 +182,12 @@ function ProjectDialog({ project, onClose }) {
               </button>
             </div>
             <div className="mt-3">
-              <Tags tags={shown.tags} />
+              <Tags tags={project.tags} />
             </div>
-            <p className="mt-6 leading-relaxed text-muted text-pretty">{shown[language].description}</p>
-            {shown.link && (
+            <p className="mt-6 leading-relaxed text-muted text-pretty">{project[language].description}</p>
+            {project.link && (
               <p className="mt-6 text-sm font-medium">
-                <VisitLink href={shown.link}>{t.projects.visit}</VisitLink>
+                <VisitLink href={project.link}>{t.projects.visit}</VisitLink>
               </p>
             )}
           </div>
@@ -196,7 +200,13 @@ function ProjectDialog({ project, onClose }) {
 const Projects = () => {
   const { t } = useLanguage();
   const [selected, setSelected] = useState(null);
-  const closeDialog = useCallback(() => setSelected(null), []);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const closeDialog = useCallback(() => setDialogOpen(false), []);
+
+  const openProject = (project) => {
+    setSelected(project);
+    setDialogOpen(true);
+  };
 
   return (
     <Section
@@ -209,10 +219,10 @@ const Projects = () => {
     >
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projectsData.projects.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} onOpen={setSelected} />
+          <ProjectCard key={project.id} project={project} index={index} onOpen={openProject} />
         ))}
       </div>
-      <ProjectDialog project={selected} onClose={closeDialog} />
+      <ProjectDialog project={selected} open={dialogOpen} onClose={closeDialog} />
     </Section>
   );
 };

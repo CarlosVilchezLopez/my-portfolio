@@ -18,7 +18,11 @@ function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
   return (
-    <m.div aria-hidden="true" style={{ scaleX }} className="absolute inset-x-0 -bottom-px h-0.5 origin-left bg-accent" />
+    <m.div
+      aria-hidden="true"
+      style={{ scaleX }}
+      className="absolute inset-x-0 -bottom-px h-0.5 origin-left bg-accent"
+    />
   );
 }
 

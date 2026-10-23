@@ -6,10 +6,7 @@
       "featured": true,
       "image": "yahaerp.jpg",
       "link": null,
-      "tags": [
-        "Windows Forms",
-        "SQL Server"
-      ],
+      "tags": ["Windows Forms", "SQL Server"],
       "en": {
         "title": "Yahasystem ERP",
         "summary": "Enterprise resource planning software built with Windows Forms and SQL Server, used by 50+ companies in Panama.",
@@ -27,10 +24,7 @@
       "featured": false,
       "image": "YahaPOS.png",
       "link": null,
-      "tags": [
-        "WPF",
-        "SQL Server"
-      ],
+      "tags": ["WPF", "SQL Server"],
       "en": {
         "title": "YahaPOS",
         "summary": "Fast, easy-to-use point of sale system built with WPF and SQL Server.",
@@ -48,9 +42,7 @@
       "featured": false,
       "image": null,
       "link": null,
-      "tags": [
-        "Xamarin"
-      ],
+      "tags": ["Xamarin"],
       "en": {
         "title": "Yaha WorkShop",
         "summary": "Vehicle workshop management app that stores and tracks the history of every vehicle.",
@@ -68,9 +60,7 @@
       "featured": false,
       "image": null,
       "link": null,
-      "tags": [
-        "Xamarin"
-      ],
+      "tags": ["Xamarin"],
       "en": {
         "title": "YahaMovil",
         "summary": "Mobile app to place orders remotely and browse the product catalog.",
@@ -88,10 +78,7 @@
       "featured": false,
       "image": null,
       "link": null,
-      "tags": [
-        "Xamarin",
-        "Java"
-      ],
+      "tags": ["Xamarin", "Java"],
       "en": {
         "title": "Yahacourier",
         "summary": "Real-time delivery tracking, with receipt printing and payment collection on the device.",
@@ -109,10 +96,7 @@
       "featured": false,
       "image": "api.png",
       "link": null,
-      "tags": [
-        "ASP.NET Core",
-        "REST"
-      ],
+      "tags": ["ASP.NET Core", "REST"],
       "en": {
         "title": "Yahasystem API",
         "summary": "RESTful API that connects other applications with Yahasystem ERP.",
@@ -130,9 +114,7 @@
       "featured": false,
       "image": "odontoPrime.png",
       "link": "https://odontoprime.cl/",
-      "tags": [
-        "WordPress"
-      ],
+      "tags": ["WordPress"],
       "en": {
         "title": "Odonto Prime Web Page",
         "summary": "Website for a Chilean dental clinic: services, appointments and contact information.",

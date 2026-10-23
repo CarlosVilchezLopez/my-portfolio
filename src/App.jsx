@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactGA from 'react-ga4';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
-import { LanguageProvider } from './i18n';
+import LanguageProvider from './components/language-provider';
 import Header from './components/header';
 import Hero from './components/hero';
 import About from './components/about';
