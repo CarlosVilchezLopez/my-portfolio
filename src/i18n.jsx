@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import translations from './data/translations.json';
+import { withViewTransition } from './hooks';
 
 const STORAGE_KEY = 'language';
 const LanguageContext = createContext(null);
@@ -23,8 +24,10 @@ export function LanguageProvider({ children }) {
     document.title = translations[language].meta.title;
   }, [language]);
 
+  // El cambio de idioma hace un fundido suave entre los dos textos
   const setLanguage = (next) => {
-    setLanguageState(next);
+    if (next === language) return;
+    withViewTransition(() => setLanguageState(next));
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {

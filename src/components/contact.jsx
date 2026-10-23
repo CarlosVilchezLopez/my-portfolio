@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Check, Copy, Mail } from 'lucide-react';
+import { m } from 'motion/react';
+import { reveal, trackPointer } from '../animations';
 import { useLanguage } from '../i18n';
 import { profile } from '../data/profile';
 import { SocialLinks } from './social';
@@ -28,7 +30,7 @@ const Contact = () => {
 
   return (
     <Section id="contact" number="04" label={t.nav.contact} title={t.contact.title}>
-      <div className="rounded-2xl border border-line bg-card p-6 sm:p-12">
+      <m.div {...reveal()} onPointerMove={trackPointer} className="card-glow rounded-2xl border border-line bg-card p-6 sm:p-12">
         <p className="max-w-xl text-lg leading-relaxed text-muted text-pretty">{t.contact.text}</p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -57,7 +59,7 @@ const Contact = () => {
           {t.contact.elsewhere}
           <SocialLinks />
         </div>
-      </div>
+      </m.div>
     </Section>
   );
 };

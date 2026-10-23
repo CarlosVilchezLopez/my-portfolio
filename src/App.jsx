@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactGA from 'react-ga4';
+import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import { LanguageProvider } from './i18n';
 import Header from './components/header';
 import Hero from './components/hero';
@@ -15,19 +16,25 @@ if (import.meta.env.PROD) {
   ReactGA.initialize('G-FZ0T8783H8');
 }
 
+// LazyMotion con domAnimation carga solo las animaciones que usa la web (strict obliga a usar <m.*>).
+// reducedMotion="user" quita los desplazamientos si el sistema pide reducir el movimiento.
 function App() {
   return (
-    <LanguageProvider>
-      <Header />
-      <main id="main">
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-    </LanguageProvider>
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">
+        <LanguageProvider>
+          <Header />
+          <main id="main">
+            <Hero />
+            <About />
+            <Skills />
+            <Projects />
+            <Contact />
+          </main>
+          <Footer />
+        </LanguageProvider>
+      </MotionConfig>
+    </LazyMotion>
   );
 }
 

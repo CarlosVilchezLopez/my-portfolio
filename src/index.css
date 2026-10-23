@@ -49,10 +49,23 @@
   --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --animate-blink: blink 1s step-end infinite;
+  --animate-halo: halo 6s ease-in-out infinite;
 
   @keyframes blink {
     50% {
       opacity: 0;
+    }
+  }
+
+  @keyframes halo {
+    0%,
+    100% {
+      opacity: 0.7;
+      scale: 1;
+    }
+    50% {
+      opacity: 1;
+      scale: 1.06;
     }
   }
 }
@@ -111,4 +124,138 @@
     linear-gradient(to bottom, var(--line) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 70% 65% at 50% 0%, black 25%, transparent 75%);
+}
+
+/* Efectos de luz que siguen al cursor. La posición llega en --x y --y (ver trackPointer en animations.js).
+   Solo con ratón y si el sistema no pide reducir el movimiento. */
+@property --glow {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* La cuadrícula de la portada se ilumina alrededor del cursor */
+.hero-grid-glow {
+  background-image:
+    linear-gradient(to right, var(--accent) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--accent) 1px, transparent 1px),
+    radial-gradient(circle at var(--x, 50%) var(--y, 0%), var(--accent-soft), transparent 60%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  mask-image: radial-gradient(220px circle at var(--x, 50%) var(--y, 0%), rgb(0 0 0 / 0.35), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+/* Brillo suave dentro de las tarjetas, por debajo del contenido */
+.card-glow {
+  background-image: radial-gradient(
+    360px circle at var(--x, 50%) var(--y, 50%),
+    color-mix(in oklab, var(--accent) var(--glow), transparent),
+    transparent 70%
+  );
+  /* Sin transform: lo controla Motion (inclinación de las tarjetas) y una transición CSS lo haría ir con retraso */
+  transition:
+    --glow 0.3s,
+    border-color 0.3s,
+    box-shadow 0.3s,
+    translate 0.3s;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hero:hover .hero-grid-glow {
+    opacity: 1;
+  }
+
+  .card-glow:hover {
+    --glow: 9%;
+  }
+}
+
+/* Cambio de idioma: el texto anterior se desvanece y luego aparece el nuevo. Si se fundieran a la vez
+   se verían los dos superpuestos, porque los textos en español son más largos y desplazan el contenido. */
+::view-transition-old(root) {
+  animation: 140ms ease-in both vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 220ms ease-out 100ms both vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Al cambiar a modo oscuro, el nuevo tema se expande en círculo desde el botón (ver useTheme) */
+html.theme-transition::view-transition-old(root),
+html.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Ventana de detalles de un proyecto: entra y sale con un fundido */
+.project-dialog {
+  opacity: 0;
+  transition:
+    opacity 0.25s,
+    translate 0.25s,
+    scale 0.25s,
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+}
+
+.project-dialog[open] {
+  opacity: 1;
+}
+
+.project-dialog::backdrop {
+  background-color: rgb(2 6 23 / 0);
+  backdrop-filter: blur(0);
+  transition:
+    background-color 0.25s,
+    backdrop-filter 0.25s,
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+}
+
+.project-dialog[open]::backdrop {
+  background-color: rgb(2 6 23 / 0.6);
+  backdrop-filter: blur(4px);
+}
+
+@starting-style {
+  .project-dialog[open] {
+    opacity: 0;
+  }
+
+  .project-dialog[open]::backdrop {
+    background-color: rgb(2 6 23 / 0);
+    backdrop-filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .project-dialog {
+    translate: 0 12px;
+    scale: 0.98;
+  }
+
+  .project-dialog[open] {
+    translate: 0 0;
+    scale: 1;
+  }
+
+  @starting-style {
+    .project-dialog[open] {
+      translate: 0 12px;
+      scale: 0.98;
+    }
+  }
 }

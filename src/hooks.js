@@ -1,12 +1,27 @@
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
+export function prefersReducedMotion() {
+  return typeof window.matchMedia === 'function' && window.matchMedia(REDUCED_MOTION).matches;
+}
+
+// Aplica un cambio de estado con una transición de la página (View Transitions API) si el navegador la soporta
+export function withViewTransition(update) {
+  if (!document.startViewTransition || prefersReducedMotion()) {
+    update();
+    return null;
+  }
+  const transition = document.startViewTransition(() => flushSync(update));
+  // Se rechaza si el navegador se salta la animación (por ejemplo, con dos clics seguidos); el cambio se aplica igual
+  transition.ready.catch(() => {});
+  return transition;
+}
+
 // true si el sistema pide reducir animaciones
 export function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(
-    () => typeof window.matchMedia === 'function' && window.matchMedia(REDUCED_MOTION).matches
-  );
+  const [reduced, setReduced] = useState(prefersReducedMotion);
 
   useEffect(() => {
     if (typeof window.matchMedia !== 'function') return;
@@ -19,8 +34,9 @@ export function usePrefersReducedMotion() {
   return reduced;
 }
 
-// Escribe el texto letra a letra; vuelve a empezar si cambia (por ejemplo, al cambiar de idioma)
-export function useTypewriter(text, speed = 40) {
+// Escribe el texto letra a letra. Vuelve a empezar si cambia el texto (por ejemplo, al cambiar de idioma)
+// o el número `run`. Devuelve lo escrito hasta ahora y si ya terminó.
+export function useTypewriter(text, { speed = 40, delay = 0, run = 0 } = {}) {
   const reduced = usePrefersReducedMotion();
   const [typed, setTyped] = useState(reduced ? text : '');
 
@@ -30,16 +46,22 @@ export function useTypewriter(text, speed = 40) {
       return;
     }
     let length = 0;
+    let interval;
     setTyped('');
-    const interval = setInterval(() => {
-      length += 1;
-      setTyped(text.slice(0, length));
-      if (length >= text.length) clearInterval(interval);
-    }, speed);
-    return () => clearInterval(interval);
-  }, [text, speed, reduced]);
+    const timeout = setTimeout(() => {
+      interval = setInterval(() => {
+        length += 1;
+        setTyped(text.slice(0, length));
+        if (length >= text.length) clearInterval(interval);
+      }, speed);
+    }, delay);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
+  }, [text, speed, delay, run, reduced]);
 
-  return typed;
+  return { typed, done: typed === text };
 }
 
 // Devuelve el id de la sección que ocupa el centro de la pantalla. `ids` debe ser estable.
@@ -74,14 +96,40 @@ export function useTheme() {
     document.documentElement.classList.toggle('dark', dark);
   }, [dark]);
 
-  const toggleTheme = () => {
+  // Recibe el evento del clic para que el nuevo tema se expanda en círculo desde el botón
+  const toggleTheme = (event) => {
     const next = !dark;
-    setDark(next);
     try {
       localStorage.setItem('theme', next ? 'dark' : 'light');
     } catch {
       // Sin localStorage el tema solo dura hasta recargar
     }
+
+    const root = document.documentElement;
+    root.classList.add('theme-transition');
+    const transition = withViewTransition(() => {
+      setDark(next);
+      root.classList.toggle('dark', next);
+    });
+    if (!transition) {
+      root.classList.remove('theme-transition');
+      return;
+    }
+
+    const button = event.currentTarget.getBoundingClientRect();
+    const x = button.left + button.width / 2;
+    const y = button.top + button.height / 2;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    // Las promesas se rechazan si el navegador se salta la transición; el tema ya cambió igualmente
+    transition.ready
+      .then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 550, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' }
+        );
+      })
+      .catch(() => {});
+    transition.finished.catch(() => {}).finally(() => root.classList.remove('theme-transition'));
   };
 
   return [dark, toggleTheme];

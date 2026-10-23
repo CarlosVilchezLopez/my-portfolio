@@ -16,9 +16,10 @@
       "toLight": "Switch to light mode"
     },
     "hero": {
-      "badge": "Yahasystem ERP is used by 50+ companies in Panama",
+      "badge": "Yahasystem ERP is used by {count}+ companies in Panama",
       "role": "Full Stack Developer",
       "tagline": "I build reliable software for businesses: desktop, web and mobile.",
+      "replaySound": "Replay with sound",
       "ctaProjects": "View projects",
       "ctaContact": "Contact me",
       "cv": "Download CV",
@@ -107,9 +108,10 @@
       "toLight": "Cambiar a modo claro"
     },
     "hero": {
-      "badge": "Más de 50 empresas en Panamá usan Yahasystem ERP",
+      "badge": "Más de {count} empresas en Panamá usan Yahasystem ERP",
       "role": "Desarrollador Full Stack",
       "tagline": "Construyo software confiable para empresas: escritorio, web y móvil.",
+      "replaySound": "Repetir con sonido",
       "ctaProjects": "Ver proyectos",
       "ctaContact": "Contactar",
       "cv": "Descargar CV",

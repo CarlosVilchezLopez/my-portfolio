@@ -1,6 +1,8 @@
 // Datos personales que se repiten en varias secciones
 export const profile = {
   name: 'Carlos Vilchez',
+  // Empresas que usan Yahasystem ERP (se muestra con un contador en la portada)
+  erpCompanies: 50,
   email: 'carlosvilchezlopez@gmail.com',
   github: 'https://github.com/CarlosVilchezLopez',
   linkedin: 'https://www.linkedin.com/in/carlos-vilchez-lopez-262313187/',

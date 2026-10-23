@@ -1,5 +1,7 @@
 import React from 'react';
 import { Database, Globe, MonitorSmartphone, Server } from 'lucide-react';
+import { m } from 'motion/react';
+import { reveal, trackPointer } from '../animations';
 import { useLanguage } from '../i18n';
 import { skillGroups } from '../data/skills';
 import Section from './section';
@@ -17,10 +19,15 @@ const Skills = () => {
   return (
     <Section id="skills" number="02" label={t.nav.skills} title={t.skills.title} subtitle={t.skills.subtitle}>
       <div className="grid gap-6 sm:grid-cols-2">
-        {skillGroups.map(({ id, items }) => {
+        {skillGroups.map(({ id, items }, index) => {
           const Icon = ICONS[id];
           return (
-            <article key={id} className="rounded-2xl border border-line bg-card p-6 transition-colors hover:border-accent/40">
+            <m.article
+              key={id}
+              {...reveal((index % 2) * 0.08)}
+              onPointerMove={trackPointer}
+              className="card-glow rounded-2xl border border-line bg-card p-6 hover:border-accent/40"
+            >
               <div className="flex items-center gap-3">
                 <span className="inline-flex size-10 items-center justify-center rounded-lg bg-accent-soft text-accent">
                   <Icon className="size-5" aria-hidden="true" />
@@ -35,7 +42,7 @@ const Skills = () => {
                   </li>
                 ))}
               </ul>
-            </article>
+            </m.article>
           );
         })}
       </div>

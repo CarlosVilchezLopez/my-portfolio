@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, ExternalLink, Globe, Monitor, Server, Smartphone, X } from 'lucide-react';
+import { m, useReducedMotion, useSpring } from 'motion/react';
+import { reveal, trackPointer } from '../animations';
 import { useLanguage } from '../i18n';
 import projectsData from '../data/projects.json';
 import Section from './section';
@@ -63,13 +65,38 @@ function VisitLink({ href, children }) {
   );
 }
 
-function ProjectCard({ project, onOpen }) {
+// Inclina la tarjeta unos grados hacia el cursor (solo con ratón)
+function useTilt() {
+  const reduced = useReducedMotion();
+  const rotateX = useSpring(0, { stiffness: 250, damping: 20 });
+  const rotateY = useSpring(0, { stiffness: 250, damping: 20 });
+
+  const onPointerMove = (event) => {
+    trackPointer(event);
+    if (reduced || event.pointerType !== 'mouse') return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    rotateY.set(((event.clientX - rect.left) / rect.width - 0.5) * 6);
+    rotateX.set(-((event.clientY - rect.top) / rect.height - 0.5) * 6);
+  };
+
+  const onPointerLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
+  return { style: { rotateX, rotateY, transformPerspective: 900 }, onPointerMove, onPointerLeave };
+}
+
+function ProjectCard({ project, index, onOpen }) {
   const { language, t } = useLanguage();
+  const tilt = useTilt();
   const text = project[language];
 
   return (
-    <article
-      className={`group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition duration-300 hover:shadow-lg motion-safe:hover:-translate-y-1 ${
+    <m.article
+      {...reveal((index % 3) * 0.08)}
+      {...tilt}
+      className={`card-glow group flex flex-col overflow-hidden rounded-2xl border border-line bg-card hover:shadow-lg motion-safe:hover:-translate-y-1 ${
         project.featured ? 'sm:col-span-full md:flex-row' : ''
       }`}
     >
@@ -100,7 +127,7 @@ function ProjectCard({ project, onOpen }) {
           {project.link && <VisitLink href={project.link}>{t.projects.visit}</VisitLink>}
         </div>
       </div>
-    </article>
+    </m.article>
   );
 }
 
@@ -108,6 +135,10 @@ function ProjectCard({ project, onOpen }) {
 function ProjectDialog({ project, onClose }) {
   const { language, t } = useLanguage();
   const dialogRef = useRef(null);
+  // Mantiene el último proyecto mientras la ventana se desvanece al cerrarse
+  const lastProject = useRef(project);
+  if (project) lastProject.current = project;
+  const shown = project ?? lastProject.current;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -127,15 +158,15 @@ function ProjectDialog({ project, onClose }) {
       aria-labelledby="project-dialog-title"
       // Un clic fuera del contenido (en el fondo oscuro) cierra la ventana
       onClick={(event) => event.target === dialogRef.current && close()}
-      className="m-auto max-h-[90vh] w-[min(44rem,calc(100%-2rem))] overflow-hidden rounded-2xl border border-line bg-card p-0 text-fg shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm"
+      className="project-dialog m-auto max-h-[90vh] w-[min(44rem,calc(100%-2rem))] overflow-hidden rounded-2xl border border-line bg-card p-0 text-fg shadow-2xl"
     >
-      {project && (
+      {shown && (
         <div className="max-h-[90vh] overflow-y-auto">
-          <ProjectImage project={project} className="border-b border-line" />
+          <ProjectImage project={shown} className="border-b border-line" />
           <div className="p-6 sm:p-8">
             <div className="flex items-start justify-between gap-4">
               <h3 id="project-dialog-title" className="text-2xl font-semibold tracking-tight">
-                {project[language].title}
+                {shown[language].title}
               </h3>
               <button
                 type="button"
@@ -147,12 +178,12 @@ function ProjectDialog({ project, onClose }) {
               </button>
             </div>
             <div className="mt-3">
-              <Tags tags={project.tags} />
+              <Tags tags={shown.tags} />
             </div>
-            <p className="mt-6 leading-relaxed text-muted text-pretty">{project[language].description}</p>
-            {project.link && (
+            <p className="mt-6 leading-relaxed text-muted text-pretty">{shown[language].description}</p>
+            {shown.link && (
               <p className="mt-6 text-sm font-medium">
-                <VisitLink href={project.link}>{t.projects.visit}</VisitLink>
+                <VisitLink href={shown.link}>{t.projects.visit}</VisitLink>
               </p>
             )}
           </div>
@@ -177,8 +208,8 @@ const Projects = () => {
       className="border-y border-line bg-surface"
     >
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projectsData.projects.map((project) => (
-          <ProjectCard key={project.id} project={project} onOpen={setSelected} />
+        {projectsData.projects.map((project, index) => (
+          <ProjectCard key={project.id} project={project} index={index} onOpen={setSelected} />
         ))}
       </div>
       <ProjectDialog project={selected} onClose={closeDialog} />

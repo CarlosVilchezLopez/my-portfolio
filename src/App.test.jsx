@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 
@@ -7,10 +7,36 @@ beforeEach(() => {
   document.documentElement.className = '';
 });
 
+afterEach(() => {
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});
+
 test('shows the name and role in the hero', () => {
   render(<App />);
   expect(screen.getByRole('heading', { level: 1, name: 'Carlos Vilchez' })).toBeInTheDocument();
   expect(screen.getByText('Full Stack Developer')).toBeInTheDocument();
+});
+
+test('reads the ERP badge as a whole sentence for screen readers', () => {
+  render(<App />);
+  expect(screen.getByText('Yahasystem ERP is used by 50+ companies in Panama')).toHaveClass('sr-only');
+});
+
+test('replays the tagline with the typing sound and stops it at the end', async () => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'] });
+  const play = vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue();
+  const pause = vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {});
+  const { unmount } = render(<App />);
+
+  await act(() => vi.advanceTimersByTimeAsync(5000));
+  act(() => screen.getByRole('button', { name: 'Replay with sound' }).click());
+  expect(play).toHaveBeenCalledTimes(1);
+  expect(pause).not.toHaveBeenCalled();
+
+  await act(() => vi.advanceTimersByTimeAsync(5000));
+  expect(pause).toHaveBeenCalled();
+  unmount();
 });
 
 test('switches to Spanish and remembers the choice', async () => {
