@@ -103,7 +103,8 @@ const Header = () => {
                 key={code}
                 type="button"
                 lang={code}
-                aria-label={name}
+                // El nombre incluye el texto visible (EN/ES) para que el control por voz lo reconozca
+                aria-label={`${code.toUpperCase()} – ${name}`}
                 aria-pressed={language === code}
                 onClick={() => setLanguage(code)}
                 className={`rounded-md px-2 py-1 font-mono text-xs font-medium uppercase transition-colors ${

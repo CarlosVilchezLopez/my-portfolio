@@ -25,6 +25,7 @@ Hecho con React 18, Tailwind CSS 4 y [Vite](https://vite.dev). Es una sola pági
 | Colores del tema claro y oscuro          | `src/index.css`                 |
 | Foto de perfil                           | `src/assets/carlos-vilchez.jpg` |
 | Imagen al compartir el enlace            | `public/og-image.jpg`           |
+| Aviso de cookies y Google Analytics      | `src/analytics.js`              |
 
 ## Requisitos
 

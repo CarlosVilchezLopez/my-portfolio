@@ -89,6 +89,13 @@
     },
     "footer": {
       "rights": "All rights reserved."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "text": "I use Google Analytics to count visits and improve this site. It only sets cookies if you accept.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "link": "Cookies"
     }
   },
   "es": {
@@ -181,6 +188,13 @@
     },
     "footer": {
       "rights": "Todos los derechos reservados."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "text": "Uso Google Analytics para contar las visitas y mejorar la web. Solo guarda cookies si aceptas.",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "link": "Cookies"
     }
   }
 }

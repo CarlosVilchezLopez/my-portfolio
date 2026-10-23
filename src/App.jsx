@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactGA from 'react-ga4';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
+import { getConsent, startAnalytics } from './analytics';
 import LanguageProvider from './components/language-provider';
 import Header from './components/header';
 import Hero from './components/hero';
@@ -10,11 +10,8 @@ import Projects from './components/projects';
 import Contact from './components/contact';
 import Footer from './components/footer';
 
-// Google Analytics solo en producción, para no contar las visitas mientras se desarrolla.
-// Al inicializarse ya registra la visita a la página.
-if (import.meta.env.PROD) {
-  ReactGA.initialize('G-FZ0T8783H8');
-}
+// Si el visitante ya aceptó las cookies en otra visita, Analytics arranca directamente
+if (getConsent() === 'granted') startAnalytics();
 
 // LazyMotion con domAnimation carga solo las animaciones que usa la web (strict obliga a usar <m.*>).
 // reducedMotion="user" quita los desplazamientos si el sistema pide reducir el movimiento.
