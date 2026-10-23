@@ -1,0 +1,95 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "image": "yahaerp.jpg",
+      "link": "#",
+      "en": {
+        "title": "Yahasystem ERP",
+        "description": "Yahasystem ERP is a powerful enterprise resource planning software built in Windows Forms and backed by a robust SQL Server database. With a focus on efficiency and ease of use, Yahasystem ERP has been adopted by over 50 companies in Panama, helping them optimize operations, enhance decision-making, and effectively manage their resources."
+      },
+      "es": {
+        "title": "Yahasystem ERP",
+        "description": "Yahasystem ERP es un potente software de planificación de recursos empresariales construido en Windows Forms y respaldado por una robusta base de datos SQL Server. Con un enfoque en la eficiencia y la facilidad de uso, Yahasystem ERP ha sido adoptado por más de 50 empresas en Panamá, ayudándoles a optimizar operaciones, mejorar la toma de decisiones y gestionar sus recursos de manera efectiva."
+      }
+    },
+    {
+      "id": 2,
+      "image": "YahaPOS.png",
+      "link": "#",
+      "en": {
+        "title": "YahaPOS",
+        "description": "YahaPOS is a point of sale (POS) system developed in WPF, known for its speed, ease of use, and elegant design. It is designed to provide a seamless and efficient user experience, integrating perfectly with SQL Server to ensure robust performance and reliable data management. YahaPOS is ideal for businesses seeking a modern and efficient solution for their retail needs."
+      },
+      "es": {
+        "title": "YahaPOS",
+        "description": "YahaPOS es un sistema de punto de venta (POS) desarrollado en WPF, conocido por su rapidez, facilidad de uso y diseño elegante. Está diseñado para proporcionar una experiencia de usuario fluida y eficiente, integrándose perfectamente con SQL Server para asegurar un rendimiento robusto y una gestión de datos fiable."
+      }
+    },
+    {
+      "id": 3,
+      "image": "yahaerp.jpg",
+      "link": "#",
+      "en": {
+        "title": "Yaha WorkShop",
+        "description": "Yaha WorkShop is a vehicle workshop management application developed with Xamarin. It is designed to efficiently manage workshop operations, offering features such as the ability to store and track vehicle history. Yaha WorkShop is an essential tool for workshops looking to streamline their processes and maintain comprehensive records of the vehicles they service."
+      },
+      "es": {
+        "title": "Yaha WorkShop",
+        "description": "Yaha WorkShop es una aplicación de gestión de talleres de vehículos desarrollada con Xamarin. Está diseñada para gestionar eficientemente las operaciones del taller, ofreciendo características como la capacidad de almacenar y rastrear el historial de vehículos."
+      }
+    },
+    {
+      "id": 4,
+      "image": "yahaerp.jpg",
+      "link": "#",
+      "en": {
+        "title": "YahaMovil",
+        "description": "YahaMovil is a mobile application developed with Xamarin that allows users to place orders remotely and browse through a product catalog. Designed for efficiency and convenience, YahaMovil is the perfect tool for businesses looking to enhance their customer experience by offering a seamless and accessible ordering process."
+      },
+      "es": {
+        "title": "YahaMovil",
+        "description": "YahaMovil es una aplicación móvil desarrollada con Xamarin que permite a los usuarios realizar pedidos de forma remota y navegar por un catálogo de productos. Diseñada para la eficiencia y la conveniencia, YahaMovil es la herramienta perfecta para las empresas que buscan mejorar la experiencia del cliente."
+      }
+    },
+    {
+      "id": 5,
+      "image": "yahaerp.jpg",
+      "link": "#",
+      "en": {
+        "title": "Yahacourier",
+        "description": "Yahacourier is a delivery tracking application developed with Xamarin, utilizing Java libraries to control the integrated printers in devices. It enables companies to monitor delivery routes in real-time, allowing couriers to log completed deliveries, print receipts, and receive payments. Yahacourier is designed to streamline the delivery process, providing businesses with efficient tracking capabilities and ensuring that deliveries are recorded and managed seamlessly."
+      },
+      "es": {
+        "title": "Yahacourier",
+        "description": "Yahacourier es una aplicación de seguimiento de entregas desarrollada con Xamarin, utilizando bibliotecas de Java para controlar las impresoras integradas en los dispositivos. Permite a las empresas monitorear las rutas de entrega en tiempo real, permitiendo a los mensajeros registrar entregas completadas, imprimir recibos y recibir pagos."
+      }
+    },
+    {
+      "id": 6,
+      "image": "api.png",
+      "link": "#",
+      "en": {
+        "title": "Yahasystem API",
+        "description": "Yahasystem API is a RESTful API developed with ASP.NET Core, featuring multiple endpoints that enable seamless communication between various applications and the Yahasystem ERP. This API is designed to facilitate integration, allowing different systems to interact efficiently with the ERP, ensuring smooth data exchange and operational consistency across the platform."
+      },
+      "es": {
+        "title": "Yahasystem API",
+        "description": "Yahasystem API es una API RESTful desarrollada con ASP.NET Core, que cuenta con múltiples endpoints que permiten una comunicación fluida entre varias aplicaciones y el ERP de Yahasystem. Esta API está diseñada para facilitar la integración, permitiendo que diferentes sistemas interactúen de manera eficiente con el ERP, asegurando un intercambio de datos fluido y una consistencia operativa en toda la plataforma."
+      }
+    },
+    {
+      "id": 7,
+      "image": "odontoPrime.png",
+      "link": "https://odontoprime.cl/",
+      "en": {
+        "title": "Odonto Prime Web Page",
+        "description": "Odonto Prime Web Page is a website designed with WordPress for a Chilean dental clinic. The site was created to provide a professional and user-friendly online presence for the clinic, offering patients easy access to information about services, appointments, and other essential details."
+      },
+      "es": {
+        "title": "Odonto Prime Web Page",
+        "description": "Odonto Prime Web Page es un sitio web diseñado con WordPress para una clínica dental chilena. El sitio fue creado para proporcionar una presencia en línea profesional y fácil de usar para la clínica, ofreciendo a los pacientes un acceso fácil a la información sobre servicios, citas y otros detalles esenciales."
+      }
+    }
+  ]
+}

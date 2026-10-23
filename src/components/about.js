@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import typingSound from '../assets/typing.mp3'
+import typingSound from '../assets/typing.mp3';
+import translations from '../translation.json'; // Importa el archivo JSON con las traducciones
 
-const About = () => {
-  const [text, setText] = useState('');
-  const [typingStarted, setTypingStarted] = useState(false);
-  const audioRef = useRef(new Audio(typingSound));
-  const fullText = `I am a passionate Full Stack Developer who finds joy in writing clean, efficient code. Solving complex problems is what drives me, and I thrive on the challenge of turning ideas into functional, well-crafted applications. Every day is an opportunity to learn something new, and I’m committed to continuous growth and improvement in my craft.`;
+const About = ({ language }) => {
+  const [text, setText] = useState(''); // Estado para manejar el texto que se escribe
+  const [typingStarted, setTypingStarted] = useState(false); // Estado para manejar si se ha iniciado la escritura
+  const audioRef = useRef(new Audio(typingSound)); // Referencia para manejar el audio de la escritura
+  const fullText = translations[language].aboutParagraph; // Texto completo a escribir, basado en el idioma seleccionado
 
+  // Función para iniciar la escritura y el sonido
   const startTyping = () => {
     setTypingStarted(true);
   };
@@ -14,7 +16,7 @@ const About = () => {
   useEffect(() => {
     if (typingStarted) {
       const audio = audioRef.current;
-      audio.loop = true; // Hace que el sonido se repita en bucle
+      audio.loop = true; // Repite el sonido en bucle
 
       // Inicia la reproducción del sonido
       audio.play().catch(error => console.log("Error playing sound:", error));
@@ -29,64 +31,70 @@ const About = () => {
             return prev;
           }
         });
-      }, 50);
+      }, 50); // Controla la velocidad de la escritura
 
       return () => {
         clearInterval(interval);
         audio.pause(); // Asegura que el sonido se detenga si el componente se desmonta
       };
     }
-  }, [typingStarted]);
+  }, [typingStarted, fullText]);
 
   return (
     <section id="about" className="p-8 bg-white text-gray-900">
-      <h2 className="text-2xl font-semibold mb-4">About Me</h2>
+      {/* Título del componente, traducido dinámicamente */}
+      <h2 className="text-2xl font-semibold mb-4">{translations[language].aboutTitle}</h2>
+      
+      {/* Botón para iniciar la escritura */}
       {!typingStarted && (
         <button onClick={startTyping} className="bg-blue-500 text-white p-2 rounded-md">
           Click Me
         </button>
       )}
+      
+      {/* Texto que se escribe dinámicamente */}
       {typingStarted && <p className="text-gray-700 text-lg">{text}</p>}
 
-        {/* Sección de Skills */}
-        <div className="mt-8">
-        <h3 className="text-xl font-semibold mb-4">My Skills</h3>
+      {/* Sección de Skills */}
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4">{translations[language].skillsTitle}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Cada una de las habilidades, traducidas dinámicamente */}
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">C# & .NET</h4>
-            <p className="text-gray-600">Skilled in developing robust applications using C# and .NET.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.csharp}</h4>
+            <p className="text-gray-600">{translations[language].skills.csharpDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">SQL & Databases</h4>
-            <p className="text-gray-600">Proficient in SQL Server, PostgreSQL, and database design.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.sql}</h4>
+            <p className="text-gray-600">{translations[language].skills.sqlDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">REST API</h4>
-            <p className="text-gray-600">Experienced in building RESTful APIs for scalable applications.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.rest}</h4>
+            <p className="text-gray-600">{translations[language].skills.restDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">Java</h4>
-            <p className="text-gray-600">Proficient in Java development for various platforms.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.java}</h4>
+            <p className="text-gray-600">{translations[language].skills.javaDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">Python</h4>
-            <p className="text-gray-600">Experienced in Python for automation and data analysis.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.python}</h4>
+            <p className="text-gray-600">{translations[language].skills.pythonDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">.NET Core</h4>
-            <p className="text-gray-600">Developing modern applications using .NET Core.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.netCore}</h4>
+            <p className="text-gray-600">{translations[language].skills.netCoreDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">Flutter</h4>
-            <p className="text-gray-600">Building cross-platform mobile apps with Flutter.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.flutter}</h4>
+            <p className="text-gray-600">{translations[language].skills.flutterDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">HTML & CSS</h4>
-            <p className="text-gray-600">Skilled in crafting responsive and accessible web designs.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.htmlCss}</h4>
+            <p className="text-gray-600">{translations[language].skills.htmlCssDesc}</p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300">
-            <h4 className="text-lg font-bold">JavaScript</h4>
-            <p className="text-gray-600">Proficient in JavaScript, including ES6+ and various frameworks.</p>
+            <h4 className="text-lg font-bold">{translations[language].skills.javascript}</h4>
+            <p className="text-gray-600">{translations[language].skills.javascriptDesc}</p>
           </div>
         </div>
       </div>
