@@ -1,0 +1,200 @@
+{
+  "en": {
+    "meta": {
+      "title": "Carlos Vilchez · Full Stack Developer"
+    },
+    "nav": {
+      "about": "About",
+      "skills": "Skills",
+      "projects": "Projects",
+      "contact": "Contact",
+      "skip": "Skip to content",
+      "menu": "Open menu",
+      "closeMenu": "Close menu",
+      "language": "Language",
+      "toDark": "Switch to dark mode",
+      "toLight": "Switch to light mode"
+    },
+    "hero": {
+      "badge": "Yahasystem ERP is used by {count}+ companies in Panama",
+      "role": "Full Stack Developer",
+      "tagline": "I build reliable software for businesses: desktop, web and mobile.",
+      "replaySound": "Replay with sound",
+      "ctaProjects": "View projects",
+      "ctaContact": "Contact me",
+      "cv": "Download CV",
+      "photoAlt": "Portrait of Carlos Vilchez"
+    },
+    "about": {
+      "title": "About me",
+      "paragraph": "I am a passionate Full Stack Developer who finds joy in writing clean, efficient code. Solving complex problems is what drives me, and I thrive on the challenge of turning ideas into functional, well-crafted applications. Every day is an opportunity to learn something new, and I’m committed to continuous growth and improvement in my craft.",
+      "highlights": {
+        "desktop": {
+          "title": "Desktop",
+          "text": "ERP and point of sale systems with Windows Forms, WPF and SQL Server."
+        },
+        "web": {
+          "title": "Web & APIs",
+          "text": "REST APIs with ASP.NET Core and websites for clients."
+        },
+        "mobile": {
+          "title": "Mobile",
+          "text": "Apps for orders, deliveries and workshops with Xamarin and Flutter."
+        }
+      }
+    },
+    "skills": {
+      "title": "Skills & technologies",
+      "subtitle": "What I use to build complete products, from the database to the interface.",
+      "groups": {
+        "backend": {
+          "title": "Backend & APIs",
+          "text": "Robust applications and RESTful APIs for scalable systems, plus Python for automation and data analysis."
+        },
+        "data": {
+          "title": "Databases",
+          "text": "Database design and SQL with SQL Server and PostgreSQL."
+        },
+        "web": {
+          "title": "Web",
+          "text": "Responsive and accessible web interfaces."
+        },
+        "apps": {
+          "title": "Mobile & desktop",
+          "text": "Cross-platform mobile apps and desktop software for businesses."
+        }
+      }
+    },
+    "projects": {
+      "title": "Selected projects",
+      "subtitle": "A selection of the software I have built for businesses.",
+      "featured": "Featured",
+      "details": "View details",
+      "visit": "Visit site",
+      "close": "Close",
+      "screenshotOf": "Screenshot of",
+      "kinds": {
+        "desktop": "Desktop app",
+        "mobile": "Mobile app",
+        "web": "Website",
+        "api": "REST API"
+      }
+    },
+    "contact": {
+      "title": "Let’s work together",
+      "text": "Have a project in mind or an opportunity to talk about? Send me an email.",
+      "copy": "Copy email",
+      "copied": "Copied",
+      "elsewhere": "You can also find me on"
+    },
+    "footer": {
+      "rights": "All rights reserved."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "text": "I use Google Analytics to count visits and improve this site. It only sets cookies if you accept.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "link": "Cookies"
+    }
+  },
+  "es": {
+    "meta": {
+      "title": "Carlos Vilchez · Desarrollador Full Stack"
+    },
+    "nav": {
+      "about": "Sobre mí",
+      "skills": "Habilidades",
+      "projects": "Proyectos",
+      "contact": "Contacto",
+      "skip": "Saltar al contenido",
+      "menu": "Abrir menú",
+      "closeMenu": "Cerrar menú",
+      "language": "Idioma",
+      "toDark": "Cambiar a modo oscuro",
+      "toLight": "Cambiar a modo claro"
+    },
+    "hero": {
+      "badge": "Más de {count} empresas en Panamá usan Yahasystem ERP",
+      "role": "Desarrollador Full Stack",
+      "tagline": "Construyo software confiable para empresas: escritorio, web y móvil.",
+      "replaySound": "Repetir con sonido",
+      "ctaProjects": "Ver proyectos",
+      "ctaContact": "Contactar",
+      "cv": "Descargar CV",
+      "photoAlt": "Retrato de Carlos Vilchez"
+    },
+    "about": {
+      "title": "Sobre mí",
+      "paragraph": "Soy un desarrollador Full Stack apasionado que disfruta escribir código limpio y eficiente. Resolver problemas complejos es lo que me motiva, y prospero en el desafío de convertir ideas en aplicaciones funcionales y bien diseñadas. Cada día es una oportunidad para aprender algo nuevo, y estoy comprometido con el crecimiento continuo y la mejora en mi oficio.",
+      "highlights": {
+        "desktop": {
+          "title": "Escritorio",
+          "text": "Sistemas ERP y de punto de venta con Windows Forms, WPF y SQL Server."
+        },
+        "web": {
+          "title": "Web y APIs",
+          "text": "APIs REST con ASP.NET Core y sitios web para clientes."
+        },
+        "mobile": {
+          "title": "Móvil",
+          "text": "Apps de pedidos, entregas y talleres con Xamarin y Flutter."
+        }
+      }
+    },
+    "skills": {
+      "title": "Habilidades y tecnologías",
+      "subtitle": "Lo que uso para construir productos completos, de la base de datos a la interfaz.",
+      "groups": {
+        "backend": {
+          "title": "Backend y APIs",
+          "text": "Aplicaciones robustas y APIs RESTful para sistemas escalables, y Python para automatización y análisis de datos."
+        },
+        "data": {
+          "title": "Bases de datos",
+          "text": "Diseño de bases de datos y SQL con SQL Server y PostgreSQL."
+        },
+        "web": {
+          "title": "Web",
+          "text": "Interfaces web responsivas y accesibles."
+        },
+        "apps": {
+          "title": "Móvil y escritorio",
+          "text": "Apps móviles multiplataforma y software de escritorio para empresas."
+        }
+      }
+    },
+    "projects": {
+      "title": "Proyectos destacados",
+      "subtitle": "Una selección del software que he desarrollado para empresas.",
+      "featured": "Destacado",
+      "details": "Ver detalles",
+      "visit": "Visitar sitio",
+      "close": "Cerrar",
+      "screenshotOf": "Captura de",
+      "kinds": {
+        "desktop": "App de escritorio",
+        "mobile": "App móvil",
+        "web": "Sitio web",
+        "api": "API REST"
+      }
+    },
+    "contact": {
+      "title": "Trabajemos juntos",
+      "text": "¿Tienes un proyecto en mente o una oportunidad de la que hablar? Escríbeme un correo.",
+      "copy": "Copiar correo",
+      "copied": "Copiado",
+      "elsewhere": "También me encuentras en"
+    },
+    "footer": {
+      "rights": "Todos los derechos reservados."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "text": "Uso Google Analytics para contar las visitas y mejorar la web. Solo guarda cookies si aceptas.",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "link": "Cookies"
+    }
+  }
+}

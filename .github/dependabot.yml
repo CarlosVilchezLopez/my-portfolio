@@ -1,0 +1,28 @@
+# Dependabot propone cada semana las actualizaciones de dependencias en un pull request,
+# que pasa por las mismas revisiones que cualquier otro cambio (deploy.yml).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Espera unos días antes de proponer una versión recién publicada: si alguien publica
+    # una versión maliciosa de un paquete, suele detectarse y retirarse en ese tiempo.
+    # Las actualizaciones de seguridad no esperan.
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    # Agrupa las actualizaciones menores en un solo pull request para no llenar la lista
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns: ["*"]

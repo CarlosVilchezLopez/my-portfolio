@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# My Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Portafolio personal de Carlos Vilchez, publicado en [carlosvilchez.com](https://carlosvilchez.com).
 
-## Available Scripts
+Hecho con React 18, Tailwind CSS 4 y [Vite](https://vite.dev). Es una sola página, en inglés y español, con modo claro y oscuro.
 
-In the project directory, you can run:
+## Pendientes
 
-### `npm start`
+- [ ] **Capturas de Yaha WorkShop, YahaMovil y Yahacourier.** Ahora muestran un marcador con el tipo de app.
+      Guarda cada captura en `src/assets/projects/` (PNG o JPG, mejor en 16:9 y al menos 1280 px de ancho) y escribe
+      el nombre del archivo en `image` del proyecto en `src/data/projects.json` (ahora vale `null`). Al compilar se
+      convierte sola a WebP en dos tamaños.
+- [ ] **CV en PDF.** Guárdalo en `public/` (por ejemplo `public/cv-carlos-vilchez.pdf`) y pon su ruta en `cvUrl`
+      en `src/data/profile.js`. El botón "Descargar CV" aparece solo en la portada.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Dónde cambiar el contenido
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Qué                                      | Archivo                         |
+| ---------------------------------------- | ------------------------------- |
+| Textos de la web (inglés y español)      | `src/data/translations.json`    |
+| Proyectos: resumen, descripción, imagen  | `src/data/projects.json`        |
+| Capturas de los proyectos                | `src/assets/projects/`          |
+| Tecnologías de cada grupo de habilidades | `src/data/skills.js`            |
+| Correo, GitHub, LinkedIn y CV            | `src/data/profile.js`           |
+| Colores del tema claro y oscuro          | `src/index.css`                 |
+| Foto de perfil                           | `src/assets/carlos-vilchez.jpg` |
+| Imagen al compartir el enlace            | `public/og-image.jpg`           |
+| Aviso de cookies y Google Analytics      | `src/analytics.js`              |
 
-### `npm test`
+## Publicación
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+La web se publica sola: cada push a `main` pasa por GitHub Actions (`.github/workflows/deploy.yml`), que revisa el
+código (lint, formato, pruebas y build) y, si todo pasa, publica la carpeta `build` en GitHub Pages. En los pull
+requests se hacen las mismas revisiones, sin publicar. Una auditoría de seguridad (`npm audit`) corre aparte y avisa
+en rojo sin bloquear la publicación.
 
-### `npm run build`
+Dependabot (`.github/dependabot.yml`) propone cada lunes las actualizaciones de dependencias en un pull request.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Configuración inicial (una sola vez, en GitHub)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Settings → Pages → Build and deployment → Source:** elegir **GitHub Actions** (antes era "Deploy from a branch",
+   con la rama `gh-pages`).
+2. En esa misma página, comprobar que **Custom domain** sigue siendo `carlosvilchez.com` y que **Enforce HTTPS** está
+   activado.
+3. **Settings → Code security:** activar **Dependabot alerts** y **Dependabot security updates**, para recibir los
+   arreglos de seguridad en cuanto se publiquen.
+4. Cuando la primera publicación desde `main` funcione, la rama `gh-pages` ya no se usa y se puede borrar.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Requisitos
 
-### `npm run eject`
+Node.js 20.19+ o 22.12+.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Comandos
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `npm start` (o `npm run dev`): abre la web en modo desarrollo en [http://localhost:3000](http://localhost:3000) y se recarga al guardar cambios.
+- `npm test`: ejecuta las pruebas con [Vitest](https://vitest.dev) en modo observación. Para una sola pasada: `npx vitest run`.
+- `npm run build`: genera la versión de producción en la carpeta `build`.
+- `npm run preview`: sirve esa versión de producción en local para revisarla antes de publicar.
+- `npm run lint`: revisa el código con ESLint (incluye reglas de accesibilidad).
+- `npm run format`: da formato al código con Prettier (`npm run format:check` solo lo comprueba).

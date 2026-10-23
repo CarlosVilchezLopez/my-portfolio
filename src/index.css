@@ -1,13 +1,264 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import 'tailwindcss';
+
+/* El modo oscuro se activa con la clase .dark en <html> (ver el script de index.html) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Colores del sitio. Los componentes usan solo estos nombres (bg-bg, text-muted, border-line…),
+   así el tema claro y el oscuro se cambian en un único lugar. */
+:root {
+  --bg: var(--color-white);
+  --surface: var(--color-slate-50);
+  --card: var(--color-white);
+  --fg: var(--color-slate-900);
+  --muted: var(--color-slate-600);
+  --line: var(--color-slate-200);
+  --accent: var(--color-blue-600);
+  --accent-hover: var(--color-blue-700);
+  --accent-soft: var(--color-blue-50);
+  --accent-fg: var(--color-white);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.dark {
+  --bg: var(--color-slate-950);
+  --surface: color-mix(in oklab, var(--color-slate-900) 55%, var(--color-slate-950));
+  --card: var(--color-slate-900);
+  --fg: var(--color-slate-100);
+  --muted: var(--color-slate-400);
+  --line: var(--color-slate-800);
+  --accent: var(--color-blue-400);
+  --accent-hover: var(--color-blue-300);
+  --accent-soft: color-mix(in oklab, var(--color-blue-400) 15%, transparent);
+  --accent-fg: var(--color-slate-950);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+}
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --animate-blink: blink 1s step-end infinite;
+  --animate-halo: halo 6s ease-in-out infinite;
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes halo {
+    0%,
+    100% {
+      opacity: 0.7;
+      scale: 1;
+    }
+    50% {
+      opacity: 1;
+      scale: 1.06;
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Tailwind CSS v4 no longer gives buttons a pointer cursor; keep the v3 behavior. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Evita que la página se desplace detrás de la ventana de detalles de un proyecto */
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+/* Cuadrícula sutil detrás de la portada, que se desvanece hacia los bordes */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 0%, black 25%, transparent 75%);
+}
+
+/* Efectos de luz que siguen al cursor. La posición llega en --x y --y (ver trackPointer en animations.js).
+   Solo con ratón y si el sistema no pide reducir el movimiento. */
+@property --glow {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* La cuadrícula de la portada se ilumina alrededor del cursor */
+.hero-grid-glow {
+  background-image:
+    linear-gradient(to right, var(--accent) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--accent) 1px, transparent 1px),
+    radial-gradient(circle at var(--x, 50%) var(--y, 0%), var(--accent-soft), transparent 60%);
+  background-size:
+    48px 48px,
+    48px 48px,
+    100% 100%;
+  mask-image: radial-gradient(220px circle at var(--x, 50%) var(--y, 0%), rgb(0 0 0 / 0.35), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+/* Brillo suave dentro de las tarjetas, por debajo del contenido */
+.card-glow {
+  background-image: radial-gradient(
+    360px circle at var(--x, 50%) var(--y, 50%),
+    color-mix(in oklab, var(--accent) var(--glow), transparent),
+    transparent 70%
+  );
+  /* Sin transform: lo controla Motion (inclinación de las tarjetas) y una transición CSS lo haría ir con retraso */
+  transition:
+    --glow 0.3s,
+    border-color 0.3s,
+    box-shadow 0.3s,
+    translate 0.3s;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hero:hover .hero-grid-glow {
+    opacity: 1;
+  }
+
+  .card-glow:hover {
+    --glow: 9%;
+  }
+}
+
+/* Cambio de idioma: el texto anterior se desvanece y luego aparece el nuevo. Si se fundieran a la vez
+   se verían los dos superpuestos, porque los textos en español son más largos y desplazan el contenido. */
+::view-transition-old(root) {
+  animation: 140ms ease-in both vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 220ms ease-out 100ms both vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Al cambiar a modo oscuro, el nuevo tema se expande en círculo desde el botón (ver useTheme) */
+html.theme-transition::view-transition-old(root),
+html.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Ventana de detalles de un proyecto: entra y sale con un fundido */
+.project-dialog {
+  opacity: 0;
+  transition:
+    opacity 0.25s,
+    translate 0.25s,
+    scale 0.25s,
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+}
+
+.project-dialog[open] {
+  opacity: 1;
+}
+
+.project-dialog::backdrop {
+  background-color: rgb(2 6 23 / 0);
+  backdrop-filter: blur(0);
+  transition:
+    background-color 0.25s,
+    backdrop-filter 0.25s,
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+}
+
+.project-dialog[open]::backdrop {
+  background-color: rgb(2 6 23 / 0.6);
+  backdrop-filter: blur(4px);
+}
+
+@starting-style {
+  .project-dialog[open] {
+    opacity: 0;
+  }
+
+  .project-dialog[open]::backdrop {
+    background-color: rgb(2 6 23 / 0);
+    backdrop-filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .project-dialog {
+    translate: 0 12px;
+    scale: 0.98;
+  }
+
+  .project-dialog[open] {
+    translate: 0 0;
+    scale: 1;
+  }
+
+  @starting-style {
+    .project-dialog[open] {
+      translate: 0 12px;
+      scale: 0.98;
+    }
+  }
 }
