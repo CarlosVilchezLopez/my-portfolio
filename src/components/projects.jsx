@@ -1,40 +1,188 @@
-import React from 'react';
-import projectsData from '../projects.json'; // Importa desde `src/projects.json`
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ArrowRight, ExternalLink, Globe, Monitor, Server, Smartphone, X } from 'lucide-react';
+import { useLanguage } from '../i18n';
+import projectsData from '../data/projects.json';
+import Section from './section';
 
-const Projects = ({ language }) => {
+const KIND_ICONS = {
+  desktop: Monitor,
+  mobile: Smartphone,
+  web: Globe,
+  api: Server,
+};
 
-  // Función para cargar imágenes con manejo de errores
-  
+// Captura del proyecto o, si aún no hay (image: null), un marcador con el tipo de app
+function ProjectImage({ project, className = '' }) {
+  const { language, t } = useLanguage();
+
+  if (!project.image) {
+    const Icon = KIND_ICONS[project.kind];
+    return (
+      <div className={`flex aspect-video flex-col items-center justify-center gap-3 bg-surface text-muted ${className}`}>
+        <Icon className="size-8" strokeWidth={1.5} aria-hidden="true" />
+        <span className="font-mono text-xs">{t.projects.kinds[project.kind]}</span>
+      </div>
+    );
+  }
 
   return (
-    <section id="projects" className="p-8 bg-gray-100 text-gray-900">
-      <h2 className="text-2xl font-semibold mb-6 text-center">
-        {language === "en" ? "My Projects" : "Mis Proyectos"}
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {projectsData.projects.map((project) => {
-        
+    <div className={`aspect-video overflow-hidden bg-surface ${className}`}>
+      <img
+        src={import.meta.env.BASE_URL + project.image}
+        alt={`${t.projects.screenshotOf} ${project[language].title}`}
+        loading="lazy"
+        className="size-full object-cover object-top transition-transform duration-500 motion-safe:group-hover:scale-[1.03]"
+      />
+    </div>
+  );
+}
 
-          return (
-            <div key={project.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transform hover:scale-105 transition duration-300">
-              <div className="h-48 flex justify-center items-center bg-gray-200">
-              
-                  <img src={import.meta.env.BASE_URL + project.image} className="max-h-full max-w-full object-contain" />
-           
-                 
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-bold mb-2">{project[language].title}</h3>
-                <p className="text-gray-700 mb-4">{project[language].description}</p>
-                <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700">
-                  {language === "en" ? "View Project" : "Ver Proyecto"}
-                </a>
-              </div>
-            </div>
-          );
-        })}
+function Tags({ tags }) {
+  return (
+    <ul className="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <li key={tag} className="rounded-md bg-accent-soft px-2 py-0.5 font-mono text-xs text-accent">
+          {tag}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function VisitLink({ href, children }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 text-muted transition-colors hover:text-fg"
+    >
+      {children}
+      <ExternalLink className="size-3.5" aria-hidden="true" />
+    </a>
+  );
+}
+
+function ProjectCard({ project, onOpen }) {
+  const { language, t } = useLanguage();
+  const text = project[language];
+
+  return (
+    <article
+      className={`group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition duration-300 hover:shadow-lg motion-safe:hover:-translate-y-1 ${
+        project.featured ? 'sm:col-span-full md:flex-row' : ''
+      }`}
+    >
+      <ProjectImage
+        project={project}
+        className={`border-b border-line ${project.featured ? 'md:w-3/5 md:shrink-0 md:border-r md:border-b-0' : ''}`}
+      />
+      <div className="flex flex-1 flex-col p-6">
+        {project.featured && (
+          <span className="mb-3 self-start rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-fg">
+            {t.projects.featured}
+          </span>
+        )}
+        <h3 className="text-lg font-semibold">{text.title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted text-pretty">{text.summary}</p>
+        <div className="mt-4">
+          <Tags tags={project.tags} />
+        </div>
+        <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-6 text-sm font-medium">
+          <button
+            type="button"
+            onClick={() => onOpen(project)}
+            className="inline-flex items-center gap-1 text-accent transition-colors hover:text-accent-hover"
+          >
+            {t.projects.details}
+            <ArrowRight className="size-4 transition-transform motion-safe:group-hover:translate-x-0.5" aria-hidden="true" />
+          </button>
+          {project.link && <VisitLink href={project.link}>{t.projects.visit}</VisitLink>}
+        </div>
       </div>
-    </section>
+    </article>
+  );
+}
+
+// Ventana con la descripción completa. Usa <dialog>, que ya gestiona el foco y la tecla Esc.
+function ProjectDialog({ project, onClose }) {
+  const { language, t } = useLanguage();
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    dialog.addEventListener('close', onClose);
+    return () => dialog.removeEventListener('close', onClose);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (project) dialogRef.current.showModal();
+  }, [project]);
+
+  const close = () => dialogRef.current.close();
+
+  return (
+    <dialog
+      ref={dialogRef}
+      aria-labelledby="project-dialog-title"
+      // Un clic fuera del contenido (en el fondo oscuro) cierra la ventana
+      onClick={(event) => event.target === dialogRef.current && close()}
+      className="m-auto max-h-[90vh] w-[min(44rem,calc(100%-2rem))] overflow-hidden rounded-2xl border border-line bg-card p-0 text-fg shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm"
+    >
+      {project && (
+        <div className="max-h-[90vh] overflow-y-auto">
+          <ProjectImage project={project} className="border-b border-line" />
+          <div className="p-6 sm:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <h3 id="project-dialog-title" className="text-2xl font-semibold tracking-tight">
+                {project[language].title}
+              </h3>
+              <button
+                type="button"
+                onClick={close}
+                aria-label={t.projects.close}
+                className="-mt-1 -mr-2 inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-fg"
+              >
+                <X className="size-5" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="mt-3">
+              <Tags tags={project.tags} />
+            </div>
+            <p className="mt-6 leading-relaxed text-muted text-pretty">{project[language].description}</p>
+            {project.link && (
+              <p className="mt-6 text-sm font-medium">
+                <VisitLink href={project.link}>{t.projects.visit}</VisitLink>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </dialog>
+  );
+}
+
+const Projects = () => {
+  const { t } = useLanguage();
+  const [selected, setSelected] = useState(null);
+  const closeDialog = useCallback(() => setSelected(null), []);
+
+  return (
+    <Section
+      id="projects"
+      number="03"
+      label={t.nav.projects}
+      title={t.projects.title}
+      subtitle={t.projects.subtitle}
+      className="border-y border-line bg-surface"
+    >
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {projectsData.projects.map((project) => (
+          <ProjectCard key={project.id} project={project} onOpen={setSelected} />
+        ))}
+      </div>
+      <ProjectDialog project={selected} onClose={closeDialog} />
+    </Section>
   );
 };
 

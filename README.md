@@ -1,28 +1,36 @@
 # My Portfolio
 
-Personal portfolio of Carlos Vilchez, live at [carlosvilchez.com](https://carlosvilchez.com).
+Portafolio personal de Carlos Vilchez, publicado en [carlosvilchez.com](https://carlosvilchez.com).
 
-Built with React 18, React Router 7 and Tailwind CSS 4, bundled with [Vite](https://vite.dev).
+Hecho con React 18, Tailwind CSS 4 y [Vite](https://vite.dev). Es una sola página, en inglés y español, con modo claro y oscuro.
 
-## Requirements
+## Pendientes
 
-Node.js 20.19+ or 22.12+.
+- [ ] **Capturas de Yaha WorkShop, YahaMovil y Yahacourier.** Ahora muestran un marcador con el tipo de app.
+      Guarda cada captura en `public/` (mejor en formato 16:9) y escribe el nombre del archivo en `image`
+      del proyecto en `src/data/projects.json` (ahora vale `null`).
+- [ ] **CV en PDF.** Guárdalo en `public/` (por ejemplo `public/cv-carlos-vilchez.pdf`) y pon su ruta en `cvUrl`
+      en `src/data/profile.js`. El botón "Descargar CV" aparece solo en la portada.
 
-## Available Scripts
+## Dónde cambiar el contenido
 
-### `npm start` (or `npm run dev`)
+| Qué                                      | Archivo                       |
+| ---------------------------------------- | ----------------------------- |
+| Textos de la web (inglés y español)      | `src/data/translations.json`  |
+| Proyectos: resumen, descripción, imagen  | `src/data/projects.json`      |
+| Tecnologías de cada grupo de habilidades | `src/data/skills.js`          |
+| Correo, GitHub, LinkedIn y CV            | `src/data/profile.js`         |
+| Colores del tema claro y oscuro          | `src/index.css`               |
+| Foto de perfil                           | `src/assets/carlos-vilchez.jpg` |
+| Imagen al compartir el enlace            | `public/og-image.jpg`         |
 
-Runs the app in development mode at [http://localhost:3000](http://localhost:3000).
-The page reloads when you make changes.
+## Requisitos
 
-### `npm test`
+Node.js 20.19+ o 22.12+.
 
-Runs the tests with [Vitest](https://vitest.dev) in watch mode. Use `npx vitest run` for a single run.
+## Comandos
 
-### `npm run build`
-
-Builds the app for production into the `build` folder, ready to publish to the `gh-pages` branch.
-
-### `npm run preview`
-
-Serves the production build locally to check it before publishing.
+- `npm start` (o `npm run dev`): abre la web en modo desarrollo en [http://localhost:3000](http://localhost:3000) y se recarga al guardar cambios.
+- `npm test`: ejecuta las pruebas con [Vitest](https://vitest.dev) en modo observación. Para una sola pasada: `npx vitest run`.
+- `npm run build`: genera la versión de producción en la carpeta `build`, lista para publicar en la rama `gh-pages`.
+- `npm run preview`: sirve esa versión de producción en local para revisarla antes de publicar.

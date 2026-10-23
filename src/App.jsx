@@ -1,52 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router';
-import './App.css';
+import React from 'react';
+import ReactGA from 'react-ga4';
+import { LanguageProvider } from './i18n';
 import Header from './components/header';
+import Hero from './components/hero';
 import About from './components/about';
+import Skills from './components/skills';
 import Projects from './components/projects';
 import Contact from './components/contact';
 import Footer from './components/footer';
-import ReactGA from 'react-ga4'; // Importa ReactGA
 
-// Inicializa Google Analytics
-ReactGA.initialize('G-FZ0T8783H8');
-
-// Hook personalizado para rastrear vistas de página
-function usePageTracking() {
-  const location = useLocation();
-
-  useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
-  }, [location]);
+// Google Analytics solo en producción, para no contar las visitas mientras se desarrolla.
+// Al inicializarse ya registra la visita a la página.
+if (import.meta.env.PROD) {
+  ReactGA.initialize('G-FZ0T8783H8');
 }
 
 function App() {
-  const [language, setLanguage] = useState('en'); // Estado para el idioma
-
   return (
-    <Router basename={import.meta.env.BASE_URL}>
-      <PageTrackingWrapper>
-        <div className="flex flex-col min-h-screen">
-          <Header language={language} setLanguage={setLanguage} /> {/* Pasa el estado y función de cambio */}
-          <div className="grow">
-            <Routes>
-              <Route path="/" element={<About language={language} />} />
-              <Route path="/about" element={<About language={language} />} />
-              <Route path="/projects" element={<Projects language={language} />} />
-              <Route path="/contact" element={<Contact language={language} />} />
-            </Routes>
-          </div>
-          <Footer /> {/* Footer siempre estará al final */}
-        </div>
-      </PageTrackingWrapper>
-    </Router>
+    <LanguageProvider>
+      <Header />
+      <main id="main">
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </main>
+      <Footer />
+    </LanguageProvider>
   );
-}
-
-// Componente Wrapper para usar el hook usePageTracking dentro del contexto del Router
-function PageTrackingWrapper({ children }) {
-  usePageTracking();
-  return children;
 }
 
 export default App;
