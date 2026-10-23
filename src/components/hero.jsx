@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Download, Volume2 } from 'lucide-react';
 import { animate, m, useReducedMotion } from 'motion/react';
-import photo from '../assets/carlos-vilchez.jpg';
+// La foto se sirve en WebP a 288, 384 y 576 px: el doble de los tres tamaños en que se muestra (pantallas de alta densidad)
+import photo from '../assets/carlos-vilchez.jpg?w=288;384;576&format=webp&as=picture';
 import typingSound from '../assets/typing-loop.mp3';
 import { useLanguage } from '../i18n';
 import { useTypewriter } from '../hooks';
@@ -155,9 +156,11 @@ const Hero = () => {
           </m.div>
         </m.div>
 
+        {/* Solo escala, sin fundido: la foto es el elemento principal de la portada (LCP) y empezar
+            invisible retrasaría el momento en que el navegador la considera pintada */}
         <m.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ scale: 0.94 }}
+          animate={{ scale: 1 }}
           transition={{ duration: 0.8, ease, delay: 0.15 }}
           className="relative order-first mx-auto md:order-none"
         >
@@ -166,10 +169,13 @@ const Hero = () => {
             className="absolute -inset-4 -z-10 rounded-full bg-accent-soft blur-2xl motion-safe:animate-halo"
           />
           <img
-            src={photo}
+            src={photo.img.src}
+            srcSet={photo.sources.webp}
+            sizes="(min-width: 768px) 288px, (min-width: 640px) 192px, 144px"
+            width={photo.img.w}
+            height={photo.img.h}
             alt={t.hero.photoAlt}
-            width="640"
-            height="640"
+            fetchpriority="high"
             className="size-36 rounded-full object-cover shadow-xl ring-4 ring-card sm:size-48 md:size-72"
           />
         </m.div>

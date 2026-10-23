@@ -7,8 +7,9 @@ Hecho con React 18, Tailwind CSS 4 y [Vite](https://vite.dev). Es una sola pági
 ## Pendientes
 
 - [ ] **Capturas de Yaha WorkShop, YahaMovil y Yahacourier.** Ahora muestran un marcador con el tipo de app.
-      Guarda cada captura en `public/` (mejor en formato 16:9) y escribe el nombre del archivo en `image`
-      del proyecto en `src/data/projects.json` (ahora vale `null`).
+      Guarda cada captura en `src/assets/projects/` (PNG o JPG, mejor en 16:9 y al menos 1280 px de ancho) y escribe
+      el nombre del archivo en `image` del proyecto en `src/data/projects.json` (ahora vale `null`). Al compilar se
+      convierte sola a WebP en dos tamaños.
 - [ ] **CV en PDF.** Guárdalo en `public/` (por ejemplo `public/cv-carlos-vilchez.pdf`) y pon su ruta en `cvUrl`
       en `src/data/profile.js`. El botón "Descargar CV" aparece solo en la portada.
 
@@ -18,6 +19,7 @@ Hecho con React 18, Tailwind CSS 4 y [Vite](https://vite.dev). Es una sola pági
 | ---------------------------------------- | ------------------------------- |
 | Textos de la web (inglés y español)      | `src/data/translations.json`    |
 | Proyectos: resumen, descripción, imagen  | `src/data/projects.json`        |
+| Capturas de los proyectos                | `src/assets/projects/`          |
 | Tecnologías de cada grupo de habilidades | `src/data/skills.js`            |
 | Correo, GitHub, LinkedIn y CV            | `src/data/profile.js`           |
 | Colores del tema claro y oscuro          | `src/index.css`                 |
@@ -34,3 +36,5 @@ Node.js 20.19+ o 22.12+.
 - `npm test`: ejecuta las pruebas con [Vitest](https://vitest.dev) en modo observación. Para una sola pasada: `npx vitest run`.
 - `npm run build`: genera la versión de producción en la carpeta `build`, lista para publicar en la rama `gh-pages`.
 - `npm run preview`: sirve esa versión de producción en local para revisarla antes de publicar.
+- `npm run lint`: revisa el código con ESLint (incluye reglas de accesibilidad).
+- `npm run format`: da formato al código con Prettier (`npm run format:check` solo lo comprueba).

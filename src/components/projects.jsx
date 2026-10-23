@@ -13,11 +13,36 @@ const KIND_ICONS = {
   api: Server,
 };
 
-// Captura del proyecto o, si aún no hay (image: null), un marcador con el tipo de app
-function ProjectImage({ project, className = '' }) {
-  const { language, t } = useLanguage();
+// Capturas de src/assets/projects/. Al compilar se convierten a WebP en dos anchos (vite-imagetools)
+// y el navegador descarga solo el que necesita según el tamaño en pantalla.
+const screenshots = import.meta.glob('../assets/projects/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}', {
+  query: '?w=640;1280&format=webp&as=picture',
+  import: 'default',
+  eager: true,
+});
 
-  if (!project.image) {
+function getScreenshot(fileName) {
+  if (!fileName) return null;
+  const screenshot = screenshots[`../assets/projects/${fileName}`];
+  if (!screenshot && import.meta.env.DEV) {
+    console.warn(`No se encontró src/assets/projects/${fileName} (revisa "image" en src/data/projects.json)`);
+  }
+  return screenshot ?? null;
+}
+
+// Ancho que ocupa la imagen en pantalla (descontando márgenes), para que el navegador elija el tamaño adecuado
+const SIZES = {
+  card: '(min-width: 1024px) 310px, (min-width: 640px) calc(50vw - 36px), calc(100vw - 48px)',
+  featured: '(min-width: 1024px) 585px, (min-width: 768px) calc(60vw - 29px), calc(100vw - 48px)',
+  dialog: '(min-width: 768px) 704px, calc(100vw - 32px)',
+};
+
+// Captura del proyecto o, si aún no hay (image: null), un marcador con el tipo de app
+function ProjectImage({ project, sizes, className = '' }) {
+  const { language, t } = useLanguage();
+  const screenshot = getScreenshot(project.image);
+
+  if (!screenshot) {
     const Icon = KIND_ICONS[project.kind];
     return (
       <div
@@ -32,9 +57,14 @@ function ProjectImage({ project, className = '' }) {
   return (
     <div className={`aspect-video overflow-hidden bg-surface ${className}`}>
       <img
-        src={import.meta.env.BASE_URL + project.image}
+        src={screenshot.img.src}
+        srcSet={screenshot.sources.webp}
+        sizes={sizes}
+        width={screenshot.img.w}
+        height={screenshot.img.h}
         alt={`${t.projects.screenshotOf} ${project[language].title}`}
         loading="lazy"
+        decoding="async"
         className="size-full object-cover object-top transition-transform duration-500 motion-safe:group-hover:scale-[1.03]"
       />
     </div>
@@ -104,6 +134,7 @@ function ProjectCard({ project, index, onOpen }) {
     >
       <ProjectImage
         project={project}
+        sizes={project.featured ? SIZES.featured : SIZES.card}
         className={`border-b border-line ${project.featured ? 'md:w-3/5 md:shrink-0 md:border-r md:border-b-0' : ''}`}
       />
       <div className="flex flex-1 flex-col p-6">
@@ -166,7 +197,7 @@ function ProjectDialog({ project, open, onClose }) {
     >
       {project && (
         <div className="max-h-[90vh] overflow-y-auto">
-          <ProjectImage project={project} className="border-b border-line" />
+          <ProjectImage project={project} sizes={SIZES.dialog} className="border-b border-line" />
           <div className="p-6 sm:p-8">
             <div className="flex items-start justify-between gap-4">
               <h3 id="project-dialog-title" className="text-2xl font-semibold tracking-tight">
