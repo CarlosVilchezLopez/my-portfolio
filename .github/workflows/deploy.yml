@@ -1,0 +1,77 @@
+# Revisa cada cambio y publica la web en GitHub Pages (carlosvilchez.com).
+# - En cada pull request: lint, formato, pruebas y build.
+# - En cada push a main: lo mismo y, si todo pasa, publica la carpeta build.
+# Requiere una vez en GitHub: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+name: Check and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Un push nuevo a la misma rama cancela la revisión anterior que siga en curso
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npx vitest run
+      - run: npm run build
+
+      - name: Upload site for GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build
+
+  # Aparte para que una vulnerabilidad recién publicada se vea en rojo sin bloquear la publicación;
+  # Dependabot propondrá la actualización que la corrige.
+  audit:
+    name: Security audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+
+      - run: npm audit --audit-level=moderate
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # Nunca se cancela una publicación a medias; la siguiente espera su turno
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
