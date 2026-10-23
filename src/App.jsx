@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router';
 import './App.css';
 import Header from './components/header';
 import About from './components/about';
@@ -24,11 +24,11 @@ function App() {
   const [language, setLanguage] = useState('en'); // Estado para el idioma
 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={import.meta.env.BASE_URL}>
       <PageTrackingWrapper>
         <div className="flex flex-col min-h-screen">
           <Header language={language} setLanguage={setLanguage} /> {/* Pasa el estado y función de cambio */}
-          <div className="flex-grow">
+          <div className="grow">
             <Routes>
               <Route path="/" element={<About language={language} />} />
               <Route path="/about" element={<About language={language} />} />

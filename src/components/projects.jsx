@@ -19,7 +19,7 @@ const Projects = ({ language }) => {
             <div key={project.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transform hover:scale-105 transition duration-300">
               <div className="h-48 flex justify-center items-center bg-gray-200">
               
-                  <img src={process.env.PUBLIC_URL + '/' + project.image} className="max-h-full max-w-full object-contain" />
+                  <img src={import.meta.env.BASE_URL + project.image} className="max-h-full max-w-full object-contain" />
            
                  
               </div>
